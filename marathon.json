@@ -5,10 +5,10 @@
   "mem": 128,
   "disk": 0,
   "instances": 1,
-  "acceptedResourceRoles": [],
+  "acceptedResourceRoles": null,
   "container": {
     "type": "DOCKER",
-    "volumes": [],
+    "volumes": null,
     "docker": {
       "image": "docker.devlab.local/to-do",
       "network": "BRIDGE",
@@ -25,7 +25,7 @@
         }
       ],
       "privileged": false,
-      "parameters": [],
+      "parameters": null,
       "forcePullImage": true
     }
   },
