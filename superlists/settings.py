@@ -26,7 +26,7 @@ with open('/superlists/sec_key') as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.environ['HOSTNAME'], os.environ['HOST'], 'marathon-lb.marathon.mesos', 'to-do.openpaas.devlab.local', 'to-do.openpaas.devlab.local', '127.0.0.1']
+ALLOWED_HOSTS = [os.environ['HOSTNAME'], os.environ['HOST'], 'marathon-lb.marathon.mesos', 'to-do.openpaas.devlab.local', 'to-do.dev.openpaas.devlab.local', '127.0.0.1']
 
 
 # Application definition
