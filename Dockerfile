@@ -14,4 +14,6 @@ ADD . /superlists/
 
 EXPOSE 8000
 
+RUN python manage.py migrate
+
 CMD ["sh", "/superlists/startdjango.sh"]
