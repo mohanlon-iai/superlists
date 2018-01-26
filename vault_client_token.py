@@ -7,7 +7,12 @@ gtkpr_token_path = '/token'
 
 r = requests.post(gtkpr_addr + gtkpr_token_path, data=json.dumps(payload))
 
-temp_token = r.json()['token']
+try:
+	temp_token = r.json()['token']
+except KeyError as key:
+	print("Key error: {0}".format(key))
+	print(json.dumps(r.json(), sort_keys=True, indent=2))
+
 tmp_token_headers = {'X-Vault-Token': temp_token}
 
 vault_addr = 'https://vault.marathon.mesos:8200'
