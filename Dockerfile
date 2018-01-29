@@ -19,9 +19,7 @@ RUN pip install -r requirements.txt
 
 ADD . /superlists/
 
-RUN python -c"import random; print(''.join(random.SystemRandom().
-choices('abcdefghijklmnopqrstuvwxyz0123456789', k=50)))"
-) >> sec_key && python /superlists/manage.py collectstatic --noinput
+RUN python -c "import random; print(''.join(random.SystemRandom().choices('abcdefghijklmnopqrstuvwxyz0123456789', k=50)))" >> sec_key && python /superlists/manage.py collectstatic --noinput
 
 RUN rm sec_key
 
