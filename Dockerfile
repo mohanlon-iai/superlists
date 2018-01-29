@@ -19,6 +19,8 @@ RUN pip install -r requirements.txt
 
 ADD . /superlists/
 
+RUN python /superlists/manage.py collectstatic --noinput
+
 EXPOSE 80
 
 CMD ["sh", "/superlists/startdjango.sh"]
