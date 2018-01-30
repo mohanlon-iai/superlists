@@ -1,8 +1,8 @@
 from decouple import config
-import json, requests
+import json, requests, random
 
 if config('MESOS_TASK_ID', default='') == '' :
-	app_sec_key = ''.join(rand.choices('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-', k=50))
+	app_sec_key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-', k=50))
 else:
 	task_id = config('MESOS_TASK_ID')
 	payload = {"task_id": task_id}
