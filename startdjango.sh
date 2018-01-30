@@ -1,6 +1,6 @@
 #!/bin/sh
 
-python /superlists/vault_client_token.py
+python /superlists/sec_key_gen.py
 
 python /superlists/manage.py migrate
 
