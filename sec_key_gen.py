@@ -6,9 +6,9 @@ if config('MESOS_TASK_ID', default='') == '' :
 else:
 	task_id = config('MESOS_TASK_ID')
 	payload = {"task_id": task_id}
-	gtkpr_addr = config(GATE_KEEPER_ADDRESS, default='http://vault-gatekeeper.marathon.mesos')
-	gtkpr_port = config(GATE_KEEPER_PORT, default='9201')
-	gtkpr_token_path = config(GATE_KEEPER_TOKEN, default='/token')
+	gtkpr_addr = config('GATE_KEEPER_ADDRESS', default='http://vault-gatekeeper.marathon.mesos')
+	gtkpr_port = config('GATE_KEEPER_PORT', default='9201')
+	gtkpr_token_path = config('GATE_KEEPER_TOKEN', default='/token')
 
 	r = requests.post(gtkpr_addr + ':' + gtkpr_port + gtkpr_token_path, data=json.dumps(payload))
 
