@@ -19,12 +19,12 @@ RUN pip install -r requirements.txt
 
 COPY . dcos-config/* /superlists/
 
-RUN echo '#!/bin/sh \
-	python /superlists/vault_sec_key.py \
-	python /superlists/manage.py collectstatic --noinput \
-	python /superlists/manage.py migrate \
-	cd /superlists && gunicorn --bind unix:/var/run/gunicorn.socket superlists.wsgi:application & \
-	nginx -g "daemon off;"' >> entrypoint.sh
+RUN echo '#!/bin/sh \n\
+python /superlists/vault_sec_key.py \n\
+python /superlists/manage.py collectstatic --noinput \n\
+python /superlists/manage.py migrate \n\
+cd /superlists && gunicorn --bind unix:/var/run/gunicorn.socket superlists.wsgi:application & \n\
+nginx -g "daemon off;"' >> entrypoint.sh
 
 EXPOSE 80
 

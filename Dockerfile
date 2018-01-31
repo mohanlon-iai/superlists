@@ -19,12 +19,12 @@ RUN pip install -r requirements.txt
 
 COPY . /superlists/
 
-RUN echo '#!/bin/sh \
-	python /superlists/sec_key_gen.py >> sec_key \
-	python /superlists/manage.py collectstatic --noinput \
-	python /superlists/manage.py migrate \
-	cd /superlists && gunicorn --bind unix:/var/run/gunicorn.socket superlists.wsgi:application & \
-	nginx -g "daemon off;"' >> entrypoint.sh
+RUN echo '#!/bin/sh \n\
+python /superlists/sec_key_gen.py >> sec_key \n\
+python /superlists/manage.py collectstatic --noinput \n\
+python /superlists/manage.py migrate \n\
+cd /superlists && gunicorn --bind unix:/var/run/gunicorn.socket superlists.wsgi:application & \n\
+nginx -g "daemon off;"' >> entrypoint.sh
 
 EXPOSE 80
 
