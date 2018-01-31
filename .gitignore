@@ -5,3 +5,4 @@ __pycache__
 static 
 sec_key
 .env
+increment_version.sh

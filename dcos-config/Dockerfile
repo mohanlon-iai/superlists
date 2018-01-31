@@ -17,10 +17,10 @@ COPY requirements.txt /superlists/
 
 RUN pip install -r requirements.txt
 
-COPY . /superlists/
+COPY . dcos-config/* /superlists/
 
 RUN echo '#!/bin/sh \
-	python /superlists/sec_key_gen.py >> sec_key \
+	python /superlists/vault_sec_key.py \
 	python /superlists/manage.py collectstatic --noinput \
 	python /superlists/manage.py migrate \
 	cd /superlists && gunicorn --bind unix:/var/run/gunicorn.socket superlists.wsgi:application & \
