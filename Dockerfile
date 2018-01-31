@@ -19,7 +19,7 @@ RUN pip install -r requirements.txt
 
 COPY . /superlists/
 
-RUN echo '#!/bin/sh \n\
+RUN echo -e '#!/bin/sh \n\
 python /superlists/sec_key_gen.py >> sec_key \n\
 python /superlists/manage.py collectstatic --noinput \n\
 python /superlists/manage.py migrate \n\
