@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
+from decouple import config, Csv
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -24,9 +25,10 @@ with open(os.path.join(BASE_DIR, 'sec_key')) as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [os.environ['HOSTNAME'], 'marathon-lb.marathon.mesos', 'to-do.openpaas.devlab.local', 'to-do.dev.openpaas.devlab.local', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [os.environ['HOSTNAME'], '127.0.0.1', 'localhost']
+ALLOWED_HOSTS.extend(config('ALLOWED_HOSTS', default='', cast=Csv()))
 
 
 # Application definition
