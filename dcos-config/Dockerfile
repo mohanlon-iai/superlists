@@ -23,7 +23,7 @@ RUN echo -e '#!/bin/sh \n\
 python /superlists/vault_sec_key.py \n\
 python /superlists/manage.py collectstatic --noinput \n\
 python /superlists/manage.py migrate \n\
-cd /superlists && gunicorn --bind unix:/var/run/gunicorn.socket superlists.wsgi:application & \n\
+cd /superlists && gunicorn --env DJANGO_SETTINGS_MODULE=dcos-settings --bind unix:/var/run/gunicorn.socket superlists.wsgi:application & \n\
 nginx -g "daemon off;"' >> entrypoint.sh
 
 EXPOSE 80
