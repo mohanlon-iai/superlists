@@ -2,7 +2,7 @@ db.sqlite3
 geckodriver.log
 __pycache__
 *.pyc
-static 
+/static/ 
 sec_key
 .env
 increment_version.sh
