@@ -6,21 +6,8 @@ register = template.Library()
 
 @register.filter(name='add_css_class')
 def add_css_class(field, css):
+		# print(dir(field))
 		old_class = field.field.widget.attrs.get('class', None)
 		new_class = old_class + ' ' + css.strip()
 
 		return field.as_widget(attrs={"class": new_class})
-
-@register.filter(name='add_attribute')
-def add_attribute(field, css):
-		attrs = field.field.widget.attrs
-		definition = css.split(',')
-
-		for d in definition:
-				if ':' not in d:
-						attrs['class'] += ' ' + d
-				else:
-						t, v = d.split(':')
-						attrs[t] = v
-
-		return field.as_widget(attrs=attrs)
