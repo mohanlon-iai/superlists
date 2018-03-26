@@ -17,13 +17,26 @@
 			<div class="row">
 				<nav class="navbar navbar-light bg-light justify-content-between w-100 mb-3">
 						<a class="navbar-brand" href="/">Superlists</a>
-						<form class="form-inline" method="POST" action="#">
+						<form class="form-inline" method="POST" action="{% url 'send_login_email' %}">
 							<label class="mx-1" for="email1">Enter email to log in:</label>
 							<input id="email" name="email" class="form-control mr-sm-2" type="text" placeholder="email" aria-label="email">
 							{% csrf_token %}
 						</form>				
-				</nav>				
+				</nav>	
 			</div>
+			{% if messages %}
+				<div class="row">
+					<div class="col-md-8">
+						{% for message in messages %}
+							{% if message.level_tag == 'success' %}
+								<div class="alert alert-success">{{ message }}</div>
+							{% else %}
+								<div class="alert alert-warning">{{ message }}</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
 			<div class="row jumbotron">
 				<div class="col-md-6 offset-md-3">
 					<div class="text-center">
