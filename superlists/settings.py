@@ -34,7 +34,8 @@ ALLOWED_HOSTS.extend(config('ALLOWED_HOSTS', default='', cast=Csv()))
 # Application definition
 
 INSTALLED_APPS = [
-	'lists',
+		'lists',
+		'accounts',
     # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
