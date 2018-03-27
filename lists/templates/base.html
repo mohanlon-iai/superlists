@@ -15,13 +15,21 @@
 	<body>
 		<div class="container">
 			<div class="row">
-				<nav class="navbar navbar-light bg-light justify-content-between w-100 mb-3">
-						<a class="navbar-brand" href="/">Superlists</a>
-						<form class="form-inline" method="POST" action="{% url 'send_login_email' %}">
+				<nav class="navbar navbar-expand-lg navbar-light bg-light w-100 mb-3">
+					<a class="navbar-brand" href="/">Superlists</a>
+					{% if user.email %}
+						<ul class="navbar-nav ml-auto">
+							<li class="nav-item"><span class="navbar-text">Logged in as {{ user.email }}</span></li>
+							<li class="nav-item active"><a class="nav-link" href="#">Log out</a></li>
+						</ul>
+					{% else %}
+						<form class="form-inline ml-auto" method="POST" action="{% url 'send_login_email' %}">
 							<label class="mx-1" for="email1">Enter email to log in:</label>
 							<input id="email" name="email" class="form-control mr-sm-2" type="text" placeholder="email" aria-label="email">
 							{% csrf_token %}
-						</form>				
+						</form>									
+					{% endif %}
+
 				</nav>	
 			</div>
 			{% if messages %}
