@@ -22,13 +22,22 @@ vault_wrap_path = '/v1/sys/wrapping/unwrap'
 
 r = requests.put(vault_addr + vault_wrap_path, headers=tmp_token_headers, verify=False)
 
-client_token = r.json()['auth']['client_token']
+try:
+	client_token = r.json()['auth']['client_token']
+except KeyError as key:
+	print("Key error: {0}".format(key))
+	print(json.dumps(r.json(), sort_keys=True, indent=2))
+
 vault_sec_path = '/v1/secret/to-do/dev'
 client_token_headers = {'X-Vault-Token': client_token}
 
 r = requests.get(vault_addr + vault_sec_path, headers=client_token_headers, verify=False)
 
-app_sec_key = r.json()['data']['key']
+try:
+	app_sec_key = r.json()['data']['key']
+except KeyError as key:
+	print("Key error: {0}".format(key))
+	print(json.dumps(r.json(), sort_keys=True, indent=2))
 
 with open('sec_key', 'w') as s:
 	s.write(app_sec_key)
