@@ -1,7 +1,7 @@
 from decouple import config
-import json, requests
+import json, requests, random
 
-task_id = config('MESOS_TASK_ID')
+task_id = config('MESOS_TASK_ID', default='')
 payload = {"task_id": task_id}
 gtkpr_addr = config('GATE_KEEPER_ADDRESS', default='http://vault-gatekeeper.marathon.mesos')
 gtkpr_port = config('GATE_KEEPER_PORT', default='9201')
@@ -38,6 +38,10 @@ try:
 except KeyError as key:
 	print("Key error: {0}".format(key))
 	print(json.dumps(r.json(), sort_keys=True, indent=2))
+
+if app_sec_key is None:
+	app_sec_key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-', k=50))
+	print('Obtaining secret key failed. Creating random secret key to start Django app.')
 
 with open('sec_key', 'w') as s:
 	s.write(app_sec_key)
