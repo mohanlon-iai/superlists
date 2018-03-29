@@ -1,6 +1,7 @@
 from decouple import config
 import json, requests, random
 
+app_sec_key = None
 task_id = config('MESOS_TASK_ID', default='')
 payload = {"task_id": task_id}
 gtkpr_addr = config('GATE_KEEPER_ADDRESS', default='http://vault-gatekeeper.marathon.mesos')
