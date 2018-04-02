@@ -9,9 +9,9 @@ MAX_WAIT = 10
 class FunctionalTest(StaticLiveServerTestCase):
 	def setUp(self):
 		self.browser = webdriver.Firefox()
-		staging_server = config('STAGING_SERVER', default='')
-		if staging_server:
-			self.live_server_url = 'http://' + staging_server
+		self.staging_server = config('STAGING_SERVER', default='')
+		if self.staging_server:
+			self.live_server_url = 'http://' + self.staging_server
 		
 	def tearDown(self):
 		self.browser.refresh()
