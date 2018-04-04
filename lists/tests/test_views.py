@@ -50,7 +50,6 @@ class ListViewTest(TestCase):
 	def test_can_save_a_POST_request_to_an_existing_list(self):
 		other_list = List.objects.create()
 		correct_list = List.objects.create()
-		print('other_list.id == {}'.format(other_list.id))
 		
 		self.client.post(
 			f'/lists/{correct_list.id}/',
