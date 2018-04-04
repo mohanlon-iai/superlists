@@ -23,7 +23,6 @@ class ItemValidationTest(FunctionalTest):
 
 		# The browser intercepts the request, and does not load the 
 		# list page
-		print('looking for invalid pseudo element')
 		self.wait_for(lambda: self.browser.find_element_by_css_selector(
 			'#id_text:invalid'
 		))
