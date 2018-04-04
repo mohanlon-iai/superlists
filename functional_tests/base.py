@@ -1,5 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 from decouple import config
 import time
@@ -32,9 +33,23 @@ class FunctionalTest(StaticLiveServerTestCase):
 	def tearDown(self):
 		self.browser.refresh()
 		self.browser.quit()
-			
+
+	def click_and_send_keys(self, element_id, keys_to_send):
+		element_id.click()
+		element_id.send_keys(keys_to_send)
+
+	def click_and_submit_keys(self, element_id, keys_to_send):
+		self.click_and_send_keys(element_id, keys_to_send)
+		element_id.send_keys(Keys.ENTER)
+	
 	def get_item_input_box(self):
-		return self.browser.find_element_by_id('id_text')	
+		return self.browser.find_element_by_id('id_text')
+
+	def add_list_item(self, item_text):
+		num_rows = len(self.browser.find_elements_by_css_selector('#id_list_table tr'))
+		self.click_and_submit_keys(self.get_item_input_box(), item_text)
+		item_number = num_rows + 1
+		self.wait_for_row_in_list_table(f'{item_number}: {item_text}')
 
 	@wait
 	def wait_for(self, fn):

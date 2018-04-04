@@ -18,6 +18,9 @@
 				<nav class="navbar navbar-expand-lg navbar-light bg-light w-100 mb-3">
 					<a class="navbar-brand" href="/">Superlists</a>
 					{% if user.email %}
+						<ul class="navbar-nav navbar-left">
+							<li class="nav-item active"><a href="{% url 'my_lists' user.email %}">My lists</a></li>
+						</ul>
 						<ul class="navbar-nav ml-auto">
 							<li class="nav-item"><span class="navbar-text">Logged in as {{ user.email }}</span></li>
 							<li class="nav-item active"><a class="nav-link" href="{% url 'logout' %}">Log out</a></li>
@@ -49,17 +52,19 @@
 				<div class="col-md-6 offset-md-3">
 					<div class="text-center">
 						<h1>{% block header_text %}{% endblock %}</h1>
-						<form method="POST" action="{% block form_action %}{% endblock %}" novalidate>
-							{% csrf_token %}
-							{% if form.errors %}
-								{{ form.text|add_css_class:"is-invalid" }}
-								<div class="invalid-feedback">
-									{{ form.text.errors }}
-								</div>							
-							{% else %}
-								{{ form.text }}
-							{% endif %}
-						</form>				
+						{% block list_form %}
+							<form method="POST" action="{% block form_action %}{% endblock %}" novalidate>
+								{% csrf_token %}
+								{% if form.errors %}
+									{{ form.text|add_css_class:"is-invalid" }}
+									<div class="invalid-feedback">
+										{{ form.text.errors }}
+									</div>							
+								{% else %}
+									{{ form.text }}
+								{% endif %}
+							</form>
+						{% endblock %}			
 					</div>				
 				</div>
 			</div>
@@ -70,6 +75,13 @@
 					{% endblock %}			
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+					{% block extra_content %}
+					{% endblock %}			
+				</div>
+			</div>			
 
 		</div>
 		
