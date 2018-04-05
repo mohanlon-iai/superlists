@@ -16,7 +16,6 @@ def wait(fn):
 				return fn(*args, **kwargs)
 			except(WebDriverException, AssertionError) as e:
 				if time.time() - start_time > MAX_WAIT:
-					print("Failed to execute function. Raising error: {}".format(e))
 					raise e;
 				time.sleep(0.5)
 	return modified_fn
