@@ -1,5 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 from decouple import config
@@ -24,7 +25,9 @@ def wait(fn):
 class FunctionalTest(StaticLiveServerTestCase):
 
 	def setUp(self):
-		self.browser = webdriver.Firefox()
+		opts = Options()
+		opts.log.level = "trace"
+		self.browser = webdriver.Firefox(firefox_options=opts)
 		self.staging_server = config('STAGING_SERVER', default='')
 		if self.staging_server:
 			self.live_server_url = 'http://' + self.staging_server
