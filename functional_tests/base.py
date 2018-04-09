@@ -28,12 +28,15 @@ class FunctionalTest(StaticLiveServerTestCase):
 
 	def setUp(self):
 		if config('JENKINS_URL', default=''):
-			capabilities = DesiredCapabilities.FIREFOX
+			capabilities = DesiredCapabilities.FIREFOX.copy()
 			capabilities.update({'logLevel': 'ERROR'})
 			jenkins_server = urlparse(config('JENKINS_URL'))
 			remote_server = jenkins_server.scheme + '://' + jenkins_server.hostname + ':4444/wd/hub'
 
-			self.browser = webdriver.Remote(remote_server, capabilities)
+			self.browser = webdriver.Remote(
+				command_executor=remote_server, 
+				desired_capabilities=capabilities
+			)
 		else:
 			self.browser = webdriver.Firefox()
 		self.staging_server = config('STAGING_SERVER', default='')
