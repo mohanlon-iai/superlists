@@ -1,7 +1,8 @@
 from urllib.parse import urlparse
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.firefox.options import Options
+# from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 
@@ -39,7 +40,9 @@ class FunctionalTest(StaticLiveServerTestCase):
 		# 	)
 		# else:
 		# 	self.browser = webdriver.Firefox()
-		self.browser = webdriver.Firefox()
+		opts = Options()
+		opts.log.level = "trace"
+		self.browser = webdriver.Firefox(firefox_options=opts)
 		self.staging_server = config('STAGING_SERVER', default='')
 		if self.staging_server:
 			self.live_server_url = 'http://' + self.staging_server
