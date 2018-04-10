@@ -27,18 +27,19 @@ def wait(fn):
 class FunctionalTest(StaticLiveServerTestCase):
 
 	def setUp(self):
-		if config('JENKINS_URL', default=''):
-			capabilities = DesiredCapabilities.FIREFOX.copy()
-			capabilities.update({'logLevel': 'ERROR'})
-			jenkins_server = urlparse(config('JENKINS_URL'))
-			remote_server = jenkins_server.scheme + '://' + jenkins_server.hostname + ':4444/wd/hub'
+		# if config('JENKINS_URL', default=''):
+		# 	capabilities = DesiredCapabilities.FIREFOX.copy()
+		# 	capabilities.update({'logLevel': 'ERROR'})
+		# 	jenkins_server = urlparse(config('JENKINS_URL'))
+		# 	remote_server = jenkins_server.scheme + '://' + jenkins_server.hostname + ':4444/wd/hub'
 
-			self.browser = webdriver.Remote(
-				command_executor=remote_server, 
-				desired_capabilities=capabilities
-			)
-		else:
-			self.browser = webdriver.Firefox()
+		# 	self.browser = webdriver.Remote(
+		# 		command_executor=remote_server, 
+		# 		desired_capabilities=capabilities
+		# 	)
+		# else:
+		# 	self.browser = webdriver.Firefox()
+		self.browser = webdriver.Firefox()
 		self.staging_server = config('STAGING_SERVER', default='')
 		if self.staging_server:
 			self.live_server_url = 'http://' + self.staging_server
