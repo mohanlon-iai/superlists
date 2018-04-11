@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-# from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 
@@ -27,22 +27,28 @@ def wait(fn):
 
 class FunctionalTest(StaticLiveServerTestCase):
 
-	def setUp(self):
-		# if config('JENKINS_URL', default=''):
-		# 	capabilities = DesiredCapabilities.FIREFOX.copy()
-		# 	capabilities.update({'logLevel': 'ERROR'})
-		# 	jenkins_server = urlparse(config('JENKINS_URL'))
-		# 	remote_server = jenkins_server.scheme + '://' + jenkins_server.hostname + ':4444/wd/hub'
+	@classmethod
+	def setUpClass(cls):
+		cls.host = config('HOST')
+		cls.port = config('PORT0', default=0, cast=int)
+		super(FunctionalTest, cls).setUpClass()
 
-		# 	self.browser = webdriver.Remote(
-		# 		command_executor=remote_server, 
-		# 		desired_capabilities=capabilities
-		# 	)
-		# else:
-		# 	self.browser = webdriver.Firefox()
-		opts = Options()
-		opts.log.level = "trace"
-		self.browser = webdriver.Firefox(firefox_options=opts)
+	def setUp(self):
+		if config('JENKINS_URL', default=''):
+			capabilities = DesiredCapabilities.FIREFOX.copy()
+			capabilities.update({'logLevel': 'ERROR'})
+			jenkins_server = urlparse(config('JENKINS_URL'))
+			remote_server = jenkins_server.scheme + '://' + jenkins_server.hostname + ':4444/wd/hub'
+
+			self.browser = webdriver.Remote(
+				command_executor=remote_server, 
+				desired_capabilities=capabilities
+			)
+		else:
+			self.browser = webdriver.Firefox()
+		# opts = Options()
+		# opts.log.level = "trace"
+		# self.browser = webdriver.Firefox(firefox_options=opts)
 		self.staging_server = config('STAGING_SERVER', default='')
 		if self.staging_server:
 			self.live_server_url = 'http://' + self.staging_server
