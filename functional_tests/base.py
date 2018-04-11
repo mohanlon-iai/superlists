@@ -29,7 +29,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		cls.host = config('HOST')
+		cls.host = config('LIBPROCESS_IP')
 		cls.port = config('PORT0', default=0, cast=int)
 		super(FunctionalTest, cls).setUpClass()
 
