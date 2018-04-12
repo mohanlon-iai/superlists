@@ -29,28 +29,26 @@ class FunctionalTest(StaticLiveServerTestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		# if config('DOCKER_IP', default=''):
-		# 	cls.host = config('DOCKER_IP')
-		# 	cls.port = config('PORT0', default=0, cast=int)
-		cls.port = config('PORT0', default=0, cast=int)
+		if config('DOCKER_IP', default=''):
+			cls.host = config('DOCKER_IP')
 		super(FunctionalTest, cls).setUpClass()
+
+	def getRemoteBrowser(self):
+		capabilities = DesiredCapabilities.FIREFOX.copy()
+		capabilities.update({'logLevel': 'ERROR'})
+		jenkins_server = urlparse(config('JENKINS_URL'))
+		remote_server = jenkins_server.scheme + '://' + jenkins_server.hostname + ':4444/wd/hub'
+
+		return webdriver.Remote(
+			command_executor=remote_server, 
+			desired_capabilities=capabilities
+		)		
 
 	def setUp(self):
 		if config('JENKINS_URL', default=''):
-			capabilities = DesiredCapabilities.FIREFOX.copy()
-			capabilities.update({'logLevel': 'ERROR'})
-			jenkins_server = urlparse(config('JENKINS_URL'))
-			remote_server = jenkins_server.scheme + '://' + jenkins_server.hostname + ':4444/wd/hub'
-
-			self.browser = webdriver.Remote(
-				command_executor=remote_server, 
-				desired_capabilities=capabilities
-			)
+			self.browser = self.getRemoteBrowser()
 		else:
 			self.browser = webdriver.Firefox()
-		# opts = Options()
-		# opts.log.level = "trace"
-		# self.browser = webdriver.Firefox(firefox_options=opts)
 		self.staging_server = config('STAGING_SERVER', default='')
 		if self.staging_server:
 			self.live_server_url = 'http://' + self.staging_server

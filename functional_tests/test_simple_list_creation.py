@@ -1,4 +1,5 @@
 from .base import FunctionalTest
+from decouple import config
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -59,7 +60,10 @@ class NewVisitorTest(FunctionalTest):
 		## We use a new browser session to make sure that no information
 		## of Edith's is coming through from cookies etc
 		self.browser.quit()
-		self.browser = webdriver.Firefox()
+		if config('JENKINS_URL', default=''):
+			self.browser = self.getRemoteBrowser()
+		else:
+			self.browser = webdriver.Firefox()
 
 		# Francis visits the home page.  There is no sign of Edith's
 		# list
