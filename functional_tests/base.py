@@ -29,9 +29,10 @@ class FunctionalTest(StaticLiveServerTestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		if config('DOCKER_IP', default=''):
-			cls.host = config('DOCKER_IP')
-			cls.port = config('PORT0', default=0, cast=int)
+		# if config('DOCKER_IP', default=''):
+		# 	cls.host = config('DOCKER_IP')
+		# 	cls.port = config('PORT0', default=0, cast=int)
+		cls.port = config('PORT0', default=0, cast=int)
 		super(FunctionalTest, cls).setUpClass()
 
 	def setUp(self):
