@@ -27,3 +27,5 @@ class LayoutAndStylingTest(FunctionalTest):
 			512,
 			delta=10
 		)
+
+		self.fail("Just testing screenshot capability.")

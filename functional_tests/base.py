@@ -7,6 +7,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 
 from decouple import config
+from datetime import datetime
+import os
 import time
 
 MAX_WAIT = 10
@@ -47,15 +49,58 @@ class FunctionalTest(StaticLiveServerTestCase):
 	def setUp(self):
 		if config('JENKINS_URL', default=''):
 			self.browser = self.getRemoteBrowser()
+			self.screenshots_path = '/screenshots'
 		else:
 			self.browser = webdriver.Firefox()
+			self.screenshots_path = os.path.join(
+			    os.path.dirname(os.path.abspath(__file__)), 'screenshots'
+			)
+
 		self.staging_server = config('STAGING_SERVER', default='')
 		if self.staging_server:
 			self.live_server_url = 'http://' + self.staging_server
 
 	def tearDown(self):
-		self.browser.refresh()
+		if self._test_has_failed():
+			if not os.path.exists(self.screenshots_path):
+				if config('BUILD_TAG', default=''):
+					self.screenshots_path = '{0}/{1}'.format(
+						self.screenshots_path, 
+						config('BUILD_TAG')
+					)
+				os.makedirs(self.screenshots_path)
+			for ix, handle in enumerate(self.browser.window_handles):
+				self._windowid = ix
+				self.browser.switch_to_window(handle)
+				self.take_screenshot()
+				self.dump_html()
+
 		self.browser.quit()
+		super().tearDown()
+
+	def _test_has_failed(self):
+		return any(error for (method, error) in self._outcome.errors)
+
+	def take_screenshot(self):
+		filename = self._get_filename() + '.png'
+		print('Saving screenshot to {}'.format(filename))
+		self.browser.get_screenshot_as_file(filename)
+
+	def dump_html(self):
+		filename = self._get_filename() + '.html'
+		print('Saving HTML contents to {}'.format(filename))
+		with open(filename, 'w') as f:
+			f.write(self.browser.page_source)
+
+	def _get_filename(self):
+		timestamp = datetime.now().isoformat().replace(':', '.')[:19]
+		return '{folder}/{classname}.{method}-window{windowid}-{timestamp}'.format(
+			folder=self.screenshots_path,
+			classname=self.__class__.__name__,
+			method=self._testMethodName,
+			windowid=self._windowid,
+			timestamp=timestamp
+		)
 
 	def click_and_send_keys(self, element_id, keys_to_send):
 		element_id.click()

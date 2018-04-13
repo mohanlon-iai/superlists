@@ -6,3 +6,4 @@ __pycache__
 sec_key
 .env
 increment_version.sh
+screenshots/
