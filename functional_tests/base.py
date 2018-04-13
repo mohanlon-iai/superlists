@@ -49,7 +49,10 @@ class FunctionalTest(StaticLiveServerTestCase):
 	def setUp(self):
 		if config('JENKINS_URL', default=''):
 			self.browser = self.getRemoteBrowser()
-			self.screenshots_path = '/screenshots'
+			self.screenshots_path = '/{0}/{1}'.format(
+				'screenshots', 
+				config('BUILD_TAG')
+			)
 		else:
 			self.browser = webdriver.Firefox()
 			self.screenshots_path = os.path.join(
@@ -63,11 +66,6 @@ class FunctionalTest(StaticLiveServerTestCase):
 	def tearDown(self):
 		if self._test_has_failed():
 			if not os.path.exists(self.screenshots_path):
-				if config('BUILD_TAG', default=''):
-					self.screenshots_path = '{0}/{1}'.format(
-						self.screenshots_path, 
-						config('BUILD_TAG')
-					)
 				os.makedirs(self.screenshots_path)
 			for ix, handle in enumerate(self.browser.window_handles):
 				self._windowid = ix
